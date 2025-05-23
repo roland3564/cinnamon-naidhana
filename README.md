@@ -1,5 +1,5 @@
 # cinnamon-naidhana
-Displays the vedic dangerous transits on cinnamon's panel
+Displays the vedic dangerous transits (Tara Baala) on cinnamon's panel
 
 ![Showcase](https://i.ibb.co/3ySHP4yD/Schermata-del-2025-05-23-16-26-25.png)
 
