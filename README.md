@@ -2,6 +2,7 @@
 Displays the vedic dangerous transits on cinnamon's panel
 
 ![Showcase](https://i.ibb.co/3ySHP4yD/Schermata-del-2025-05-23-16-26-25.png)
+
 (2025-May-25)
 
 # INSTRUCTIONS
