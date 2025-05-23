@@ -1,0 +1,10 @@
+{
+  "uuid": "naidhana-detector@n1",
+  "name": "Naidhana Detector",
+  "description": "Shows Naidhana or Vipat planetary positions with vedhas in the panel",
+  "version": "1.0",
+  "max-instances": 1,
+  "icon": "preferences-system-time-symbolic",
+  "author": "n1"
+}
+
