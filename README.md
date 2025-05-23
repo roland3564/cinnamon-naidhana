@@ -1,3 +1,6 @@
+# ATTENTION
+The results are different from JHora's Tara Baala ones, I need to investigate further.
+
 # cinnamon-naidhana
 Displays the vedic dangerous transits (Tara Baala) on cinnamon's panel
 
