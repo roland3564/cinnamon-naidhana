@@ -10,8 +10,7 @@ APPLET_PATH = os.path.dirname(os.path.realpath(__file__))
 NAIDHANA_START_FRACTION = 0.75
 VIPAT_NAKSHATRAS = [2, 6, 10, 14, 18, 22, 26]
 
-# Dharma, Kama, Artha, Moksha cycle (4 scopes, repeating every 4 nakshatras)
-SCOPE_LETTERS = ["D", "K", "A", "M"]
+SCOPE_LETTERS = ["D", "K", "A", "M"]  # Dharma, Kama, Artha, Moksha
 
 def read_config():
     config_path = os.path.join(APPLET_PATH, "config.json")
@@ -28,20 +27,38 @@ def get_timezone(lat, lon, dt):
 def to_utc(dt_local, tz):
     return tz.localize(dt_local).astimezone(pytz.utc)
 
-def get_ayanamsa(jd): 
+def get_ayanamsa(jd):
     return swe.get_ayanamsa(jd)
 
 def get_planet_longitudes(jd_ut):
-    planets = [swe.SUN, swe.MOON, swe.MARS, swe.MERCURY, swe.JUPITER, swe.VENUS, swe.SATURN]
-    return {swe.get_planet_name(p): swe.calc_ut(jd_ut, p)[0][0] for p in planets}
+    # Only get visible planets and manually label Rahu and Ketu
+    visible_planets = [
+        (swe.SUN, "Sun"),
+        (swe.MOON, "Moon"),
+        (swe.MARS, "Mars"),
+        (swe.MERCURY, "Mercury"),
+        (swe.JUPITER, "Jupiter"),
+        (swe.VENUS, "Venus"),
+        (swe.SATURN, "Saturn"),
+        (swe.MEAN_NODE, "Rahu")  # Use Mean Node for Rahu
+    ]
+    
+    longitudes = {}
+    for p_id, name in visible_planets:
+        lon = swe.calc_ut(jd_ut, p_id)[0][0]
+        longitudes[name] = lon
 
-def get_lagna(jd_ut, lat, lon): 
+    # Ketu is 180 degrees opposite Rahu
+    longitudes["Ketu"] = (longitudes["Rahu"] + 180.0) % 360
+    return longitudes
+
+def get_lagna(jd_ut, lat, lon):
     return swe.houses(jd_ut, lat, lon)[0][0]
 
-def get_house(planet_lon, asc): 
+def get_house(planet_lon, asc):
     return int(((planet_lon - asc) % 360) // 30) + 1
 
-def get_nakshatra_index(lon): 
+def get_nakshatra_index(lon):
     return int(lon // 13.3333333), (lon % 13.3333333) / 13.3333333
 
 def is_naidhana(lon):
@@ -49,7 +66,6 @@ def is_naidhana(lon):
     return frac >= NAIDHANA_START_FRACTION
 
 def get_scope_letter(nak_index):
-    # Nakshatra index 0-based → assign scope letter cyclically
     return SCOPE_LETTERS[nak_index % 4]
 
 def main():
@@ -58,11 +74,11 @@ def main():
     dt_utc = to_utc(dt_local, tz)
     jd_ut = swe.julday(dt_utc.year, dt_utc.month, dt_utc.day, dt_utc.hour + dt_utc.minute / 60)
     swe.set_ephe_path(".")
-    
+
     ayanamsa = get_ayanamsa(jd_ut)
     planets = get_planet_longitudes(jd_ut)
     asc = get_lagna(jd_ut, lat, lon)
-    
+
     all_bodies = dict(planets)
     all_bodies["Lagna"] = asc
 
@@ -80,4 +96,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
