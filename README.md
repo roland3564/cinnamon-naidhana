@@ -1,6 +1,7 @@
 # ATTENTION
 The results are different from JHora's Tara Bala ones, I need to investigate further.
 Calculations might be inaccurate.
+**HELP IS MUCH APPRECIATED**
 
 # cinnamon-naidhana
 Displays the vedic dangerous transits (Tara Bala) on cinnamon's panel
